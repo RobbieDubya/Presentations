@@ -52,7 +52,16 @@ NavigationPane {
                         serverPage.soundOn = !serverPage.soundOn; 
                     }
                 }
+            },
+            ActionItem {
+             	title: qsTr("Iterate CM");
+             	onTriggered: {
+             	    if (gameServer) {
+             	        serverPage.iterateCounterMeasure();
+             	    }
+                } 
             }
+            
         ]
     }
 
