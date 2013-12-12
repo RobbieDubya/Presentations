@@ -115,7 +115,17 @@ Page {
         playField.resetGame();
     }
 
-    
+    property int counterMeasure: -1
+
+    function iterateCounterMeasure() {
+        ++ counterMeasure;
+        
+        var which = counterMeasure%4;
+        var onOff = (counterMeasure%8)<4;
+        
+        _btArduino.sendMyMessage("" + (which+1) + (onOff? "1":"0"));
+    }
+
     function resetPlayer(player) {
         player.isConnected = false;
         player.isReady = false;
