@@ -85,10 +85,16 @@ ArduinoBTController::ArduinoBTController(QObject* parent)
             const int bufferSize = sizeof(buffer);
 
             bt_rdev_get_friendly_name(next_remote_device, buffer, bufferSize);
-            map["deviceName"] = QString::fromLatin1(buffer);
+            QString deviceName;
+            map["deviceName"] = deviceName = QString::fromLatin1(buffer);
             bt_rdev_get_addr(next_remote_device, buffer);
             map["deviceAddress"] = QString::fromLatin1(buffer);
-            if ( (strcmp(buffer, "00:12:09:12:02:05") == 0) or  (strcmp(buffer, "20:13:06:18:04:04") == 0) ) { //this are my devicesis my device's mac adress
+
+            qDebug() << "Candidate device";
+            qDebug() << map["deviceName"].toString();
+            qDebug() << map["deviceAddress"].toString();
+
+            if ( (deviceName.startsWith("Seeed",Qt::CaseInsensitive)) || (strcmp(buffer, "00:12:09:12:02:05") == 0) or  (strcmp(buffer, "20:13:06:18:04:04") == 0) ) { //this are my devicesis my device's mac adress
                 qDebug() << "Found the BT device";
                 int rssi = 0;
                 bool ok = false;
@@ -103,6 +109,8 @@ ArduinoBTController::ArduinoBTController(QObject* parent)
                         false);
 
                 if (fd >= 0) {
+
+                	qDebug() << "Opened Arduino";
 
                     fflush(stdout);
                     if (fd >= 0) {
@@ -122,9 +130,12 @@ ArduinoBTController::ArduinoBTController(QObject* parent)
 
                         }
                     } else {
-                        qDebug() << "spp_open fail errno =" << QString::number(errno);
+                        qDebug() << "Arduino spp_open fail errno =" << QString::number(errno);
                     }
 
+                } else {
+
+                	qDebug() << "Could not open Arduino";
                 }
 
             map["deviceClass"] = QString::number(
@@ -136,9 +147,9 @@ ArduinoBTController::ArduinoBTController(QObject* parent)
         bt_rdev_free_array(remote_device_array);
     }
 
-    // Initialize the btdevice and SPP library APIs.
-    bt_device_init(BTControllerCallbackArduino);
-    bt_spp_init();
+//    // Initialize the btdevice and SPP library APIs.
+//    bt_device_init(BTControllerCallbackArduino);
+//    bt_spp_init();
 }
 
 
