@@ -25,7 +25,7 @@ Container {
     signal counterMeasureDone(bool player1);
     
     Label {
-        text: qsTr("Countermeassure!")
+        text: qsTr("Countermeasure!")
         horizontalAlignment: HorizontalAlignment.Center
         multiline: true
         
